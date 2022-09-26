@@ -3,12 +3,13 @@ package ch.zli.m223.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -34,11 +35,12 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Index one user.", description = "Returns a user based of the id provided.")
     @Path("/{id}")
-    public List<User> getById(long id) {
-        if (id > 0) {
-            return List.of(userService.getUserById(id));
+    public User getById(long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            throw new BadRequestException();
         }
-        return userService.findAll();
+        return user;
     }
 
     @POST
