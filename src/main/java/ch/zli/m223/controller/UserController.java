@@ -57,6 +57,8 @@ public class UserController {
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Update a user.", description = "Updates a user based on the id provided.")
     @Path("/{id}")
     public User update(long id, User user) {
