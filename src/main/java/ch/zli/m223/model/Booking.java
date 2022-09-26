@@ -3,13 +3,16 @@ package ch.zli.m223.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-
+@Entity
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,14 @@ public class Booking {
 
     @Column(nullable = false)
     private Boolean aprooved = false;
+
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "place")
+    private Place place;
 
     public Long getId() {
         return id;
@@ -57,5 +68,21 @@ public class Booking {
         this.aprooved = aprooved;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+    
     
 }
