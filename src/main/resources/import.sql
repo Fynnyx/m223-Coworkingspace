@@ -12,6 +12,8 @@ INSERT INTO public."Role" (id, title) VALUES (2, 'Administrator');
 -- Insert users
 INSERT INTO public."User" (id, email, firstname, lastname, password, role) VALUES (1, 'user@user.ch', 'user', 'user', 'user', 1);
 INSERT INTO public."User" (id, email, firstname, lastname, password, role) VALUES (2, 'admin@admin.ch', 'admin', 'admin', 'admin', 2);
+INSERT INTO public."User" (id, email, firstname, lastname, password, role) VALUES (3, 'test@test.ch', 'test', 'atest', 'test', 1);
+
 
 -- Insert bookings
 INSERT INTO public."Booking" (id, aprooved, "endTime", "startTime", place, "user") VALUES (1, false, '2022-03-10 12:15:50', '2022-03-10 12:15:50', 1, 2);
