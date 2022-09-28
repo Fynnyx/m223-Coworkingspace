@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -20,6 +21,7 @@ public class Place {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Room is mandatory")
     private String room;
 
     @Column(nullable = false)
