@@ -59,11 +59,11 @@ public class UserController {
     @Operation(summary = "Creates a new user.", description = "Creates a new user")
     public Response create(User user) {
         try {
-            return Response.ok(userService.createUser(userService.createUser(user))).build();
+            return Response.ok(userService.createUser(user)).build();
         } 
-        // catch (PersistenceException e) {
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("Email allready exists").build();
-        // } 
+        catch (PersistenceException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email allready exists").build();
+        } 
         catch (ConstraintViolationException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getConstraintViolations().toString()).build();
         }
