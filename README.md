@@ -27,4 +27,24 @@ Die Daten werden in einer PostgreSQL-Datenbank gespeichert. In der Entwicklungsu
 
 ## Automatische Tests
 
-Die automatischen Tests können mit `./mvnw quarkus:test` ausgeführt werden. Für die automatischen Tests wird nicht die PostgreSQL-Datenbank verwendet, sondern eine H2-Datenbank, welche sich im Arbeitsspeicher während der Ausführung befindet.
+Die automatischen Tests können mit `./mvnw quarkus:test` ausgeführt werden. Für die automatischen Tests werden die Test-Daten aus dem `import.sql`-File in die Datenbank geladen. Dieser werden beim Starten der Appliaktion schon hinzugefügt.
+
+
+## Zugangsdaten
+### Mitglied User
+| Email           | Password |
+|-----------------|----------|
+| user@user.ch    | user     |
+
+### Admin User
+| Email           | Password |
+|-----------------|----------|
+| admin@admin.ch  | admin    |
+
+
+
+# Weiters
+## Mein Github
+Mein Gituhub ist öffentlich und unter der URL
+- https://github.com/Fynnyx/m223-Coworkingspace
+erreichbar.
