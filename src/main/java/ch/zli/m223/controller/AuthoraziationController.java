@@ -30,6 +30,7 @@ public class AuthoraziationController {
             if (user.getPassword().equals(loginData.getPassword())) {
                 String jwt = Jwt
                         .issuer("https://zli.ch/issuer")
+                        .expiresIn(Integer.MAX_VALUE)
                         .upn(user.getEmail())
                         .groups(user.getRole().getTitle())
                         .claim("role", user.getRole().getTitle())
