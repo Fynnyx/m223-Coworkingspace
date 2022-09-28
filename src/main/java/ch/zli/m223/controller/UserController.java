@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @DELETE
-    @RolesAllowed({ "Administrator", "Mitglied" })
+    @RolesAllowed({ "Administrator"})
     @Operation(summary = "Delete a user.", description = "Deletes a user.")
     @Path("/{id}")
     public void delete(long id) {
