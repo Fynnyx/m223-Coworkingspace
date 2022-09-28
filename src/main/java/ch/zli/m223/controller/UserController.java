@@ -2,6 +2,7 @@ package ch.zli.m223.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -12,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -25,6 +27,7 @@ public class UserController {
     UserService userService;
 
     @GET
+    @RolesAllowed({"Administrator", "Mitglied"})
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all users", description = "Returns a list of all users")
     public List<User> getAll() {
@@ -32,10 +35,9 @@ public class UserController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Index one user.", description = "Returns a user based of the id provided.")
-    @Path("/{id}")
-    public User getById(long id) {
+    @RolesAllowed
+    ({"Administrator", "Mitglied"})@Produces(MediaType.APPLICATION_JSON)@Operation(summary="Index one user.",description="Returns a user based of the id provided.")@Path("/{id}")public User getById(
+            long id) {
         User user = userService.getUserById(id);
         if (user == null) {
             throw new BadRequestException();
@@ -47,11 +49,20 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new user.", description = "Creates a new user")
-    public User create(User user) {
-        return userService.createUser(user);
+    public Response create(User user) {
+        // try {
+        return Response.ok(userService.createUser(userService.createUser(user))).build();
+        // } catch (PersistenceException e) {
+        // return Response.status(Response.Status.BAD_REQUEST).entity("Email allready
+        // exists").build();
+        // } catch (Exception e) {
+        // return
+        // Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        // }
     }
 
     @DELETE
+    @RolesAllowed({ "Administrator", "Mitglied" })
     @Operation(summary = "Delete a user.", description = "Deletes a user.")
     @Path("/{id}")
     public void delete(long id) {
@@ -59,6 +70,7 @@ public class UserController {
     }
 
     @PUT
+    @RolesAllowed({ "Administrator", "Mitglied" })
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Update a user.", description = "Updates a user based on the id provided.")

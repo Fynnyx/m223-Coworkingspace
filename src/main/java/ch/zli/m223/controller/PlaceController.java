@@ -2,6 +2,7 @@ package ch.zli.m223.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -31,6 +32,7 @@ public class PlaceController {
     }
 
     @GET
+    @RolesAllowed("Administrator")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get one bokking.", description = "Returns a place based on the id provided.")
     @Path("/{id}")
@@ -39,14 +41,17 @@ public class PlaceController {
     }
 
     @POST
+    @RolesAllowed("Administrator")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new place.", description = "Creates a new place")
     public Place create(Place place) {
+        System.out.println();
         return placeService.createPlace(place);
     }
 
     @DELETE
+    @RolesAllowed("Administrator")
     @Operation(summary = "Delete a place.", description = "Deletes a place.")
     @Path("/{id}")
     public void delete(long id) {
@@ -54,6 +59,7 @@ public class PlaceController {
     }
 
     @PUT
+    @RolesAllowed("Administrator")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Update a place.", description = "Updates a place based on the id provided.")

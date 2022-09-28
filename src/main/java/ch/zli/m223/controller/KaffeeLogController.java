@@ -2,6 +2,7 @@ package ch.zli.m223.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,6 +25,7 @@ public class KaffeeLogController {
     KaffeeLogService kaffeeLogService;
 
     @GET
+    @RolesAllowed({"Administrator", "Mitglied"})
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all kaffeeLogs", description = "Returns a list of all kaffeeLogs")
     public List<KaffeeLog> getAll() {
@@ -31,6 +33,7 @@ public class KaffeeLogController {
     }
 
     @GET
+    @RolesAllowed({"Administrator", "Mitglied"})
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get one bokking.", description = "Returns a kaffeeLog based on the id provided.")
     @Path("/{id}")
@@ -39,6 +42,7 @@ public class KaffeeLogController {
     }
 
     @POST
+    @RolesAllowed("Administrator")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new kaffeeLog.", description = "Creates a new kaffeeLog")
@@ -47,6 +51,7 @@ public class KaffeeLogController {
     }
 
     @DELETE
+    @RolesAllowed("Administrator")
     @Operation(summary = "Delete a kaffeeLog.", description = "Deletes a kaffeeLog.")
     @Path("/{id}")
     public void delete(long id) {
@@ -54,6 +59,7 @@ public class KaffeeLogController {
     }
 
     @PUT
+    @RolesAllowed("Administrator")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Update a kaffeeLog.", description = "Updates a kaffeeLog based on the id provided.")
