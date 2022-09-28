@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -26,8 +29,11 @@ public class UserController {
     @Inject
     UserService userService;
 
+    @Inject
+    Validator validator;
+
     @GET
-    @RolesAllowed({"Administrator", "Mitglied"})
+    @RolesAllowed({ "Administrator", "Mitglied" })
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all users", description = "Returns a list of all users")
     public List<User> getAll() {
@@ -35,14 +41,16 @@ public class UserController {
     }
 
     @GET
-    @RolesAllowed
-    ({"Administrator", "Mitglied"})@Produces(MediaType.APPLICATION_JSON)@Operation(summary="Index one user.",description="Returns a user based of the id provided.")@Path("/{id}")public User getById(
-            long id) {
+    @RolesAllowed({ "Administrator", "Mitglied" })
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Index one user.", description = "Returns a user based of the id provided.")
+    @Path("/{id}")
+    public Response getById(long id) {
         User user = userService.getUserById(id);
         if (user == null) {
-            throw new BadRequestException();
+            return Response.status(Status.BAD_REQUEST).entity("No user found by this id").build();
         }
-        return user;
+        return Response.ok(user).build();
     }
 
     @POST
@@ -50,15 +58,15 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new user.", description = "Creates a new user")
     public Response create(User user) {
-        // try {
-        return Response.ok(userService.createUser(userService.createUser(user))).build();
-        // } catch (PersistenceException e) {
-        // return Response.status(Response.Status.BAD_REQUEST).entity("Email allready
-        // exists").build();
-        // } catch (Exception e) {
-        // return
-        // Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        // }
+        try {
+            return Response.ok(userService.createUser(userService.createUser(user))).build();
+        } 
+        // catch (PersistenceException e) {
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("Email allready exists").build();
+        // } 
+        catch (ConstraintViolationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getConstraintViolations().toString()).build();
+        }
     }
 
     @DELETE

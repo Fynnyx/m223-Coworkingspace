@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -30,6 +31,7 @@ public class User {
     private String lastname;
 
     @Column(nullable = false, unique = true)
+    @Email(message = "Email should be valid")
     private String email;
 
     @Column(nullable = false)
