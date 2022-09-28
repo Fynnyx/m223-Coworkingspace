@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,6 +13,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -35,8 +38,12 @@ public class RoleController {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get one role.", description = "Returns a role based on the id provided.")
     @Path("/{id}")
-    public Role getById(long id) {
-        return roleService.getRoleById(id);
+    public Response getById(long id) {
+        Role role = roleService.getRoleById(id);
+        if (role == null) {
+            return Response.status(Status.BAD_REQUEST).entity("No role found by this id").build();
+        }
+        return Response.ok(role).build();
     }
 
     @POST
@@ -44,8 +51,13 @@ public class RoleController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new role.", description = "Creates a new role")
-    public Role create(Role role) {
-        return roleService.createRole(role);
+    public Response create(Role role) {
+        try {
+            return Response.ok(roleService.createRole(role)).build();
+        }
+        catch (ConstraintViolationException e) {
+            return Response.status(Status.BAD_REQUEST).entity(e.getConstraintViolations().toString()).build();
+        }
     }
 
     @DELETE
