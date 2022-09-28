@@ -6,6 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import ch.zli.m223.model.KaffeeLog;
 
@@ -21,7 +22,7 @@ public class KaffeeLogService {
     }
 
     @Transactional
-    public KaffeeLog createKaffeeLog(KaffeeLog kaffeeLog) {
+    public KaffeeLog createKaffeeLog(@Valid KaffeeLog kaffeeLog) {
         entityManager.persist(kaffeeLog);
         return kaffeeLog;
     }

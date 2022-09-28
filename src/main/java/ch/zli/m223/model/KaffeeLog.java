@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Past;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -20,6 +21,7 @@ public class KaffeeLog {
     private Long id;
 
     @Column(nullable = false)
+    @Past(message = "Date must be in the past")
     private LocalDateTime dateTime;
 
     @ManyToOne
